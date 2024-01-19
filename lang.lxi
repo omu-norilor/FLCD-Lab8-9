@@ -1,0 +1,46 @@
+%{
+#include "y.tab.h"
+%}
+
+%option noyywrap
+
+LITERA          [A-Za-z]
+CIFRA	        [0-9]
+IDENTIFIER	    ({LITERA})({LITERA}|{CIFRA}|_)*
+NUMAR	        [+-]?{CIFRA}*
+WHITESPACE      [\t\r\n ]
+STRING		    \"({LITERA}|{CIFRA}|)+\"
+BOOLEAN         Adevarat|Fals
+CARACTER        \'({LITERA}|{CIFRA})\'
+CONSTANT        {NUMAR}|{BOOLEAN}|{STRING}|{CARACTER}
+
+%% 
+
+{WHITESPACE} {}
+"cu" { return PLUS; }
+"far" { return MINUS; }
+"ori" { return MULT; }
+"impartit" { return DIV; }
+"rest" { return MOD; }
+"la_fel" { return EQUAL;  }
+"nu_i" { return NOT_EQUAL; }
+"sub" { return LT; }
+"sub_sau" { return LE; }
+"peste" { return GT; }
+"peste_sau" { return GE; }
+"ii" { return ASSIGNMENT; }
+"dyi" { return L_BRACKET; }
+"hoo" { return R_BRACKET; }
+"deci" { return L_PARANTHESIS; }
+"atat" { return R_PARANTHESIS; }
+"de" { return IF; }
+"atunci" { return THEN; }
+"altminteri" { return ELSE; }
+"pana" { return WHILE; }
+"zai" { return PRINT; }
+"nyi" { return READ; }
+{IDENTIFIER} { return IDENTIFIER; }
+{NUMAR} { return NUMBER; }
+. { printf("UNKNOWN "); ECHO; printf("\n");exit(1); }
+
+%% 

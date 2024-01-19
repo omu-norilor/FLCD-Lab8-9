@@ -1,0 +1,36 @@
+%{ 	 
+#include <math.h> 
+%}
+
+LITERA          [A-Za-z]
+CIFRA	        [0-9]
+IDENTIFIER	    ({LITERA})({LITERA}|{CIFRA}|_)*
+NUMAR	        [+-]?{CIFRA}*
+WHITESPACE      [\t\r ]
+STRING		    \"({LITERA}|{CIFRA}|)+\"
+BOOLEAN         Adevarat|Fals
+CARACTER        \'({LITERA}|{CIFRA})\'
+CONSTANT        {NUMAR}|{BOOLEAN}|{STRING}|{CARACTER}
+
+%% 
+
+"cu"|"far"|"ori"|"impartit"|"rest"|"la_fel"|"nu_i"|"sub"|"sub_sau"|"peste"|"peste_sau"|"ii" printf( "An operator: %s\n", yytext ); 
+"dyi"|"hoo"|"deci"|"atat" printf( "A bracket: %s\n", yytext ); 
+"de"|"atunci"|"altminteri"|"pana"|"zai"|"nyi" printf( "A reserved word: %s\n", yytext ); 
+{IDENTIFIER} printf( "An identifier: %s\n", yytext ); 
+{NUMAR} printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) );
+{WHITESPACE} {}
+"\n" {}
+. printf("Lexical Error",yytext);
+%% 
+main( argc, argv ) 
+int argc; 
+char **argv; 
+{ 
+    ++argv, --argc; /* skip over program name */ 
+    if ( argc > 0 ) 
+    yyin = fopen( argv[0], "r" ); 
+    else 
+     yyin = stdin; 
+    yylex(); 
+} 
